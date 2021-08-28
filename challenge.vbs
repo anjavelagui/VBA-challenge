@@ -9,21 +9,60 @@ Dim totalstckVol as double
 Dim yearOpen as double
 Dim yearClose as double
 Dim summaryRow as integer
-Dim j as integer
+Dim start as integer
 Dim percentchange as double
 Dim days as integer
 Dim averchange as Double
 Dim yearchange as Double
+Dim lastRow as Long 
+Dim workshname as string
+Dim i as Long
+
+For Each ws in Worksheets
+'run macros to worl across all wksheets
+workshname = ws.name
+summaryRow = 2
+ws.cells(1,9).value = "Ticker"
+ws.cells(1,10).value = "Yearly Change"
+ws.cells(1,11).value = "Percent Change"
+ws.cells(1,12).value = "Total Stock Volume"
+
+'Finding the last row for each worksheet
+lastRow = ws.cells(Rows.Count, 1).End(xlUp).Row
+MsgBox(lastRow)
+For i = 2 To LastRow
+
+ 'check if stock changes
+    If ws.cells(i, 1).Value <> ws.cells(i + 1, 1).Value Then
+        ' set currrent stock 
+        ws.cells(summaryRow, 9).Value = ws.cells(i , 1).Value
+        summaryRow = summaryRow + 1
+                
+        totalstckVol = totalstckVol + ws.Cells(i , 7).Value
+        'Total value for the last total value for that stock
+        totalstckVol = 0
+             
+            
+        'Total value for new stock to zero
+         ws.Cells(summaryRow, 12).Value  = totalstckVol       
+       
+    Else
+        totalstckVol = totalstckVol + ws.Cells(i + 1, 7).Value
+        
+    End If
+
+Next i
+
 
 
 //setting title row
-Range("I1").Value = "Ticker"
-Range("J1").Value = "Yearly Change"
-Range("K1").Value = "Percent Change"
-Range("L1").Value = "Total Stock Volume"
+ws.Range("I1").Value = "Ticker"
+ws.Range("J1").Value = "Yearly Change"
+ws.Range("K1").Value = "Percent Change"
+ws.Range("L1").Value = "Total Stock Volume"
 
 //setting initial values
-j = 0
+start = 0
 total = 
 change
 
